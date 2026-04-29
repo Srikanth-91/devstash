@@ -1,18 +1,27 @@
 # Current Feature
 
-None — no feature in progress.
+Prisma + Neon PostgreSQL Setup
 
 ## Status
 
-—
+Completed
 
 ## Goals
 
-—
+- Install Prisma 7 (review upgrade guide for breaking changes)
+- Configure Neon PostgreSQL as the database provider (serverless)
+- Write initial schema based on data models in project-overview.md (User, Item, ItemType, Collection, Tag, ItemTag)
+- Include NextAuth models (Account, Session, VerificationToken)
+- Add appropriate indexes and cascade deletes
+- Create initial migration via `prisma migrate dev` (never `db push`)
+- Development branch → `DATABASE_URL`, production branch separate
 
 ## Notes
 
-—
+- Spec: @context/features/database-spec.md
+- Data models: @context/project-overview.md
+- Use Prisma 7 — has breaking changes; read full upgrade guide before implementing
+- Always use migrations, never direct push
 
 ## History
 
