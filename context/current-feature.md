@@ -1,18 +1,24 @@
 # Current Feature
 
-None — no feature in progress.
+Dashboard UI Phase 3 — Main area content
 
 ## Status
 
-—
+In-Progress
 
 ## Goals
 
-—
+- 4 stats cards at the top (total items, collections, favorite items, favorite collections)
+- Recent Collections section
+- Pinned Items section
+- 10 Recent Items section
+- Use mock data directly (no database yet)
 
 ## Notes
 
-—
+- Spec: @context/features/dashboard-phase-3-spec.md
+- Screenshot reference: @context/screenshots/dashboard-ui-main.png
+- Mock data: @src/lib/mock-data.ts
 
 ## History
 

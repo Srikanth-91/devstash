@@ -66,7 +66,7 @@ export const mockCollections = [
   },
   {
     id: "col_7",
-    name: "Python Snippets",
+    name: "Golang Snippets",
     description: "Useful Python code snippets",
     itemCount: 8,
     isFavorite: false,
@@ -235,5 +235,138 @@ word_lengths = {word: len(word) for word in words}`,
     isFavorite: true,
     isPinned: false,
     createdAt: "2026-01-03",
+  },
+  {
+    id: "item_7",
+    title: "React Server Components Notes",
+    description: "Key concepts, limitations, and patterns for using RSC in Next.js",
+    contentType: "text",
+    content: `# React Server Components
+
+- Run only on the server — no useState, no useEffect
+- Can fetch data directly (no API route needed)
+- Can't pass functions as props to client components
+- Use 'use client' boundary to switch to client components`,
+    typeId: "type_note",
+    typeName: "Note",
+    collectionId: "col_1",
+    collectionName: "React Patterns",
+    language: null,
+    tags: ["react", "rsc", "next.js"],
+    isFavorite: true,
+    isPinned: true,
+    createdAt: "2026-01-22",
+  },
+  {
+    id: "item_8",
+    title: "Code Review Prompt",
+    description: "Prompt for thorough AI-assisted code reviews",
+    contentType: "text",
+    content: `Review the following code as a senior engineer. Focus on:
+1. Security vulnerabilities
+2. Performance bottlenecks
+3. Edge cases and error handling
+4. Code readability and maintainability
+
+Code: {{code}}`,
+    typeId: "type_prompt",
+    typeName: "Prompt",
+    collectionId: "col_6",
+    collectionName: "AI Prompts",
+    language: null,
+    tags: ["ai", "code-review", "prompt"],
+    isFavorite: false,
+    isPinned: false,
+    createdAt: "2026-01-25",
+  },
+  {
+    id: "item_9",
+    title: "Prisma Cheat Sheet",
+    description: "Common Prisma ORM queries and patterns",
+    contentType: "text",
+    content: `// Find with relations
+const user = await prisma.user.findUnique({
+  where: { id },
+  include: { posts: true },
+})
+
+// Upsert
+await prisma.user.upsert({
+  where: { email },
+  update: { name },
+  create: { email, name },
+})`,
+    typeId: "type_snippet",
+    typeName: "Snippet",
+    collectionId: "col_2",
+    collectionName: "Python Snippets",
+    language: "typescript",
+    tags: ["prisma", "database", "orm"],
+    isFavorite: false,
+    isPinned: false,
+    createdAt: "2026-01-28",
+  },
+  {
+    id: "item_10",
+    title: "Tailwind v4 Config Reference",
+    description: "CSS-based theme configuration for Tailwind CSS v4",
+    contentType: "text",
+    content: `@import "tailwindcss";
+
+@theme {
+  --color-primary: oklch(50% 0.2 250);
+  --font-sans: "Geist", sans-serif;
+  --radius-lg: 0.75rem;
+}`,
+    typeId: "type_note",
+    typeName: "Note",
+    collectionId: null,
+    collectionName: null,
+    language: "css",
+    tags: ["tailwind", "css", "config"],
+    isFavorite: false,
+    isPinned: false,
+    createdAt: "2026-02-01",
+  },
+  {
+    id: "item_11",
+    title: "zsh Aliases",
+    description: "Productivity aliases for zsh shell",
+    contentType: "text",
+    content: `alias gs="git status"
+alias gp="git push"
+alias gl="git log --oneline --graph"
+alias ni="npm install"
+alias nr="npm run"
+alias dev="npm run dev"`,
+    typeId: "type_command",
+    typeName: "Command",
+    collectionId: "col_5",
+    collectionName: "Git Commands",
+    language: "bash",
+    tags: ["zsh", "shell", "aliases", "productivity"],
+    isFavorite: true,
+    isPinned: false,
+    createdAt: "2026-02-03",
+  },
+  {
+    id: "item_12",
+    title: "TypeScript Utility Types",
+    description: "Commonly used TypeScript utility types with examples",
+    contentType: "text",
+    content: `type Partial<T> = { [K in keyof T]?: T[K] }
+type Required<T> = { [K in keyof T]-?: T[K] }
+type Pick<T, K extends keyof T> = { [P in K]: T[P] }
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+type Record<K extends keyof any, T> = { [P in K]: T }`,
+    typeId: "type_snippet",
+    typeName: "Snippet",
+    collectionId: "col_4",
+    collectionName: "Interview Prep",
+    language: "typescript",
+    tags: ["typescript", "types", "generics"],
+    isFavorite: false,
+    isPinned: false,
+    createdAt: "2026-02-05",
   },
 ];
