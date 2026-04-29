@@ -1,27 +1,18 @@
 # Current Feature
 
-Prisma + Neon PostgreSQL Setup
+None — no feature in progress.
 
 ## Status
 
-Completed
+—
 
 ## Goals
 
-- Install Prisma 7 (review upgrade guide for breaking changes)
-- Configure Neon PostgreSQL as the database provider (serverless)
-- Write initial schema based on data models in project-overview.md (User, Item, ItemType, Collection, Tag, ItemTag)
-- Include NextAuth models (Account, Session, VerificationToken)
-- Add appropriate indexes and cascade deletes
-- Create initial migration via `prisma migrate dev` (never `db push`)
-- Development branch → `DATABASE_URL`, production branch separate
+—
 
 ## Notes
 
-- Spec: @context/features/database-spec.md
-- Data models: @context/project-overview.md
-- Use Prisma 7 — has breaking changes; read full upgrade guide before implementing
-- Always use migrations, never direct push
+—
 
 ## History
 
@@ -31,3 +22,4 @@ Completed
 - **2026-04-28** — Dashboard UI Phase 1 complete. Initialized ShadCN UI (Tailwind v4 / Base UI), added Button and Input components. Created `/dashboard` route with layout, TopBar (search + New Collection + New Item buttons), sidebar placeholder, and main area placeholder. Dark mode forced globally via `dark` class on `<html>`.
 - **2026-04-29** — Dashboard UI Phase 2 complete. Added collapsible Sidebar with colored type icons (Snippets, Prompts, Commands, Notes, Files, Images, Links), favorite and all-collections sections, user avatar area at the bottom, and mobile drawer with backdrop. Added DashboardShell client wrapper to manage sidebar state. Added PanelLeft (desktop) and Menu (mobile) toggles to TopBar. Fixed Geist font wiring in globals.css. Updated mock data to use plural type names.
 - **2026-04-29** — Dashboard UI Phase 3 complete. Added main area with 4 stats cards (total items, collections, favorite items, favorite collections), responsive collections grid, pinned items section, and 10 recent items sorted by date. Extended mock data to 12 items. Created DashboardMain server component.
+- **2026-04-30** — Prisma 7 + Neon PostgreSQL setup complete. Installed Prisma 7 with prisma-client provider, PrismaPg driver adapter, and prisma.config.ts datasource config. Created full schema (User, Item, ItemType, Collection, Tag, ItemTag + NextAuth Account, Session, VerificationToken) with indexes and cascade deletes. Applied initial migration to Neon database.
