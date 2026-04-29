@@ -1,10 +1,37 @@
-import { Search, Plus, FolderPlus } from "lucide-react";
+import { Search, Plus, FolderPlus, PanelLeft, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function TopBar() {
+interface TopBarProps {
+  onMenuClick?: () => void;
+  sidebarOpen?: boolean;
+}
+
+export default function TopBar({ onMenuClick, sidebarOpen }: TopBarProps) {
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
+      {/* Desktop sidebar toggle */}
+      {onMenuClick && (
+        <button
+          onClick={onMenuClick}
+          className="hidden md:flex items-center justify-center size-7 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          <PanelLeft className="size-4" />
+        </button>
+      )}
+
+      {/* Mobile hamburger */}
+      {onMenuClick && (
+        <button
+          onClick={onMenuClick}
+          className="flex md:hidden items-center justify-center size-7 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Open menu"
+        >
+          <Menu className="size-4" />
+        </button>
+      )}
+
       <div className="flex items-center gap-2 text-foreground font-semibold text-sm">
         <div className="size-6 rounded bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold">
           D
@@ -26,13 +53,13 @@ export default function TopBar() {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" className="gap-1.5">
+        <Button variant="outline" size="sm" className="gap-1.5 hidden sm:flex">
           <FolderPlus className="size-3.5" />
           New Collection
         </Button>
         <Button size="sm" className="gap-1.5">
           <Plus className="size-3.5" />
-          New Item
+          <span className="hidden sm:inline">New Item</span>
         </Button>
       </div>
     </header>

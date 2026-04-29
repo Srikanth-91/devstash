@@ -6,13 +6,13 @@ export const mockUser = {
 };
 
 export const mockItemTypes = [
-  { id: "type_snippet", name: "Snippet", icon: "code", isSystem: true, count: 24 },
-  { id: "type_prompt", name: "Prompt", icon: "sparkles", isSystem: true, count: 18 },
-  { id: "type_command", name: "Command", icon: "terminal", isSystem: true, count: 15 },
-  { id: "type_note", name: "Note", icon: "file-text", isSystem: true, count: 12 },
-  { id: "type_file", name: "File", icon: "file", isSystem: true, count: 5 },
-  { id: "type_image", name: "Image", icon: "image", isSystem: true, count: 3 },
-  { id: "type_url", name: "URL", icon: "link", isSystem: true, count: 8 },
+  { id: "type_snippet", name: "Snippets", icon: "code", isSystem: true, count: 24 },
+  { id: "type_prompt", name: "Prompts", icon: "sparkles", isSystem: true, count: 18 },
+  { id: "type_command", name: "Commands", icon: "terminal", isSystem: true, count: 15 },
+  { id: "type_note", name: "Notes", icon: "file-text", isSystem: true, count: 12 },
+  { id: "type_file", name: "Files", icon: "file", isSystem: true, count: 5 },
+  { id: "type_image", name: "Images", icon: "image", isSystem: true, count: 3 },
+  { id: "type_url", name: "Links", icon: "link", isSystem: true, count: 8 },
 ];
 
 export const mockCollections = [
