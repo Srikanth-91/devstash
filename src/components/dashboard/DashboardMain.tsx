@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { getDashboardCollections, getDashboardStats } from "@/lib/db/collections";
 import { getDashboardItems } from "@/lib/db/items";
-import { prisma } from "@/lib/prisma";
 
 // ── Type → icon/colour mapping ──────────────────────────────────────────────
 
@@ -218,14 +217,7 @@ function ItemCard({
 
 // ── Main export ──────────────────────────────────────────────────────────────
 
-export default async function DashboardMain() {
-  const demoUser = await prisma.user.findUnique({
-    where: { email: "demo@devstash.io" },
-    select: { id: true },
-  });
-
-  const userId = demoUser?.id ?? "";
-
+export default async function DashboardMain({ userId }: { userId: string }) {
   const [stats, collections, { pinnedItems, recentItems }] = await Promise.all([
     getDashboardStats(userId),
     getDashboardCollections(userId),
