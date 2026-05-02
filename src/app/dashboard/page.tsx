@@ -13,7 +13,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardShell sidebarData={sidebarData}>
-      <DashboardMain />
+      <DashboardMain userId={userId} />
     </DashboardShell>
   );
 }
