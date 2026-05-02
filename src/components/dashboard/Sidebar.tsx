@@ -16,6 +16,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import type { SidebarItemType, SidebarCollection } from "@/lib/db/collections";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -129,6 +130,11 @@ export default function Sidebar({ isOpen, onClose, itemTypes, collections }: Sid
                     >
                       <Icon className={`size-3.5 shrink-0 ${ICON_COLOR_MAP[type.icon] ?? "text-muted-foreground"}`} />
                       <span className="flex-1">{TYPE_DISPLAY_NAME[type.name] ?? type.name}</span>
+                      {(type.name === "file" || type.name === "image") && (
+                        <Badge variant="outline" className="h-4 px-1 text-[9px] font-semibold tracking-wider text-muted-foreground border-muted-foreground/30">
+                          PRO
+                        </Badge>
+                      )}
                       <span className="text-[11px] text-muted-foreground">{type.count}</span>
                     </Link>
                   </li>
