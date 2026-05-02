@@ -14,8 +14,8 @@ import {
   MoreHorizontal,
   ArrowRight,
 } from "lucide-react";
-import { mockItems } from "@/lib/mock-data";
 import { getDashboardCollections, getDashboardStats } from "@/lib/db/collections";
+import { getDashboardItems } from "@/lib/db/items";
 import { prisma } from "@/lib/prisma";
 
 // ── Type → icon/colour mapping ──────────────────────────────────────────────
@@ -24,13 +24,13 @@ const TYPE_CONFIG: Record<
   string,
   { Icon: React.ElementType; bg: string; text: string }
 > = {
-  type_snippet: { Icon: Code,      bg: "bg-blue-500/10",    text: "text-blue-400"    },
-  type_prompt:  { Icon: Sparkles,  bg: "bg-purple-500/10",  text: "text-purple-400"  },
-  type_command: { Icon: Terminal,  bg: "bg-emerald-500/10", text: "text-emerald-400" },
-  type_note:    { Icon: FileText,  bg: "bg-amber-500/10",   text: "text-amber-400"   },
-  type_file:    { Icon: File,      bg: "bg-orange-500/10",  text: "text-orange-400"  },
-  type_image:   { Icon: ImageIcon, bg: "bg-pink-500/10",    text: "text-pink-400"    },
-  type_url:     { Icon: LinkIcon,  bg: "bg-cyan-500/10",    text: "text-cyan-400"    },
+  snippet: { Icon: Code,      bg: "bg-blue-500/10",    text: "text-blue-400"    },
+  prompt:  { Icon: Sparkles,  bg: "bg-purple-500/10",  text: "text-purple-400"  },
+  command: { Icon: Terminal,  bg: "bg-emerald-500/10", text: "text-emerald-400" },
+  note:    { Icon: FileText,  bg: "bg-amber-500/10",   text: "text-amber-400"   },
+  file:    { Icon: File,      bg: "bg-orange-500/10",  text: "text-orange-400"  },
+  image:   { Icon: ImageIcon, bg: "bg-pink-500/10",    text: "text-pink-400"    },
+  link:    { Icon: LinkIcon,  bg: "bg-cyan-500/10",    text: "text-cyan-400"    },
 };
 
 const COL_ICON: Record<string, { Icon: React.ElementType; color: string }> = {
@@ -56,11 +56,8 @@ const TYPE_BORDER_COLOR: Record<string, string> = {
   link:    "rgb(6 182 212 / 0.4)",    // cyan-500
 };
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 // ── Sub-components ───────────────────────────────────────────────────────────
@@ -146,25 +143,23 @@ function CollectionCard({
 interface ItemCardProps {
   title: string;
   description?: string | null;
-  typeId: string;
   typeName: string;
   collectionName?: string | null;
   tags: string[];
   isFavorite: boolean;
-  createdAt: string;
+  createdAt: Date;
 }
 
 function ItemCard({
   title,
   description,
-  typeId,
   typeName,
   collectionName,
   tags,
   isFavorite,
   createdAt,
 }: ItemCardProps) {
-  const cfg = TYPE_CONFIG[typeId] ?? TYPE_CONFIG["type_snippet"];
+  const cfg = TYPE_CONFIG[typeName] ?? TYPE_CONFIG["snippet"];
   const { Icon, bg, text } = cfg;
 
   return (
@@ -231,16 +226,11 @@ export default async function DashboardMain() {
 
   const userId = demoUser?.id ?? "";
 
-  const [stats, collections] = await Promise.all([
+  const [stats, collections, { pinnedItems, recentItems }] = await Promise.all([
     getDashboardStats(userId),
     getDashboardCollections(userId),
+    getDashboardItems(userId),
   ]);
-
-  const pinnedItems = mockItems.filter((i) => i.isPinned);
-
-  const recentItems = [...mockItems]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 10);
 
   return (
     <div className="p-6 space-y-8 max-w-5xl mx-auto">
@@ -314,7 +304,6 @@ export default async function DashboardMain() {
                 key={item.id}
                 title={item.title}
                 description={item.description}
-                typeId={item.typeId}
                 typeName={item.typeName}
                 collectionName={item.collectionName}
                 tags={item.tags}
@@ -335,7 +324,6 @@ export default async function DashboardMain() {
               key={item.id}
               title={item.title}
               description={item.description}
-              typeId={item.typeId}
               typeName={item.typeName}
               collectionName={item.collectionName}
               tags={item.tags}
