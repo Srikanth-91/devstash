@@ -36,7 +36,7 @@ export async function getSidebarData(userId: string): Promise<{
   const itemTypes = rawTypes.map((t) => ({
     id: t.id,
     name: t.name,
-    icon: t.icon ?? "",
+    icon: t.icon ?? "File",
     count: t._count.items,
   }));
 

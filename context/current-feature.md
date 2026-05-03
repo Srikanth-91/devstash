@@ -1,18 +1,40 @@
 # Current Feature
 
-None — no feature in progress.
+**Code Quality Quick Wins**
 
 ## Status
 
-—
+Implemented — build passing, ready for review and commit.
 
 ## Goals
 
-—
+Fix a set of low-risk code quality issues identified by a codebase scan. No new features — only safe cleanup and bug fixes.
+
+### In Scope
+
+1. **N+1 null check fix** — [src/app/dashboard/page.tsx](../src/app/dashboard/page.tsx): add explicit null check after `prisma.user.findUnique`; throw a clear error if demo user is missing instead of silently using `""`.
+
+2. **Add dashboard error boundary** — create `src/app/dashboard/error.tsx` so async data-fetch failures show a graceful error UI instead of crashing to the root error page.
+
+3. **Extract shared type config** — move duplicated color/icon maps from `DashboardMain.tsx` and `Sidebar.tsx` into `src/lib/type-config.ts` and import from both.
+
+4. **Split DashboardMain into sub-components** — extract `StatCard`, `CollectionCard`, and `ItemCard` into their own files under `src/components/dashboard/`.
+
+5. **Validate `DATABASE_URL` at startup** — replace `process.env.DATABASE_URL!` in `src/lib/prisma.ts` with an explicit check that throws a clear error if the var is missing.
+
+6. **Fix icon fallback inconsistency** — align `icon ?? ""` in `src/lib/db/collections.ts` with the `File` fallback used in `Sidebar.tsx`; define a shared `DEFAULT_ICON` constant.
+
+### Out of Scope
+
+- Authentication (not implemented yet)
+- Seed file N+1 (seed-only, no prod impact)
+- Hardcoded user email (tied to auth, will be fixed when auth lands)
 
 ## Notes
 
-—
+- No new dependencies required.
+- Each fix is independent — can be done and tested one at a time.
+- Run `npm run build` after each fix to verify no regressions.
 
 ## History
 

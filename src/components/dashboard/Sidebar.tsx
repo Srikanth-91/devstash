@@ -1,63 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Code,
-  Sparkles,
-  Terminal,
-  FileText,
-  File,
-  Image,
-  Link as LinkIcon,
-  Star,
-  Settings,
-  X,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { File, Star, Settings, X, ChevronDown, ChevronRight } from "lucide-react";
 import type { SidebarItemType, SidebarCollection } from "@/lib/db/collections";
 import { Badge } from "@/components/ui/badge";
+import { TYPE_CONFIG, ICON_NAME_TO_CONFIG } from "@/lib/type-config";
 import { useState } from "react";
-
-const ICON_MAP: Record<string, React.ElementType> = {
-  Code: Code,
-  Sparkles: Sparkles,
-  Terminal: Terminal,
-  StickyNote: FileText,
-  File: File,
-  Image: Image,
-  Link: LinkIcon,
-};
-
-const ICON_COLOR_MAP: Record<string, string> = {
-  Code: "text-blue-400",
-  Sparkles: "text-purple-400",
-  Terminal: "text-emerald-400",
-  StickyNote: "text-amber-400",
-  File: "text-orange-400",
-  Image: "text-pink-400",
-  Link: "text-cyan-400",
-};
-
-const TYPE_DISPLAY_NAME: Record<string, string> = {
-  snippet: "Snippets",
-  prompt: "Prompts",
-  command: "Commands",
-  note: "Notes",
-  file: "Files",
-  image: "Images",
-  link: "Links",
-};
-
-const TYPE_DOT_COLOR: Record<string, string> = {
-  snippet: "bg-blue-400",
-  prompt: "bg-purple-400",
-  command: "bg-emerald-400",
-  note: "bg-amber-400",
-  file: "bg-orange-400",
-  image: "bg-pink-400",
-  link: "bg-cyan-400",
-};
 
 function getInitials(name: string) {
   return name
@@ -121,15 +69,16 @@ export default function Sidebar({ isOpen, onClose, itemTypes, collections }: Sid
             </p>
             <ul>
               {itemTypes.map((type) => {
-                const Icon = ICON_MAP[type.icon] ?? File;
+                const cfg = ICON_NAME_TO_CONFIG[type.icon];
+                const Icon = cfg?.Icon ?? File;
                 return (
                   <li key={type.id}>
                     <Link
                       href={`/items/${type.name.toLowerCase()}`}
                       className="flex items-center gap-2.5 px-3 py-1.5 text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-sm mx-1 transition-colors"
                     >
-                      <Icon className={`size-3.5 shrink-0 ${ICON_COLOR_MAP[type.icon] ?? "text-muted-foreground"}`} />
-                      <span className="flex-1">{TYPE_DISPLAY_NAME[type.name] ?? type.name}</span>
+                      <Icon className={`size-3.5 shrink-0 ${cfg?.text ?? "text-muted-foreground"}`} />
+                      <span className="flex-1">{TYPE_CONFIG[type.name]?.displayName ?? type.name}</span>
                       {(type.name === "file" || type.name === "image") && (
                         <Badge variant="outline" className="h-4 px-1 text-[9px] font-semibold tracking-wider text-muted-foreground border-muted-foreground/30">
                           PRO
@@ -191,7 +140,7 @@ export default function Sidebar({ isOpen, onClose, itemTypes, collections }: Sid
                     <ul>
                       {allCollections.map((col) => {
                         const dotColor = col.primaryTypeName
-                          ? (TYPE_DOT_COLOR[col.primaryTypeName] ?? "bg-muted-foreground")
+                          ? (TYPE_CONFIG[col.primaryTypeName]?.dotColor ?? "bg-muted-foreground")
                           : "bg-muted-foreground";
                         return (
                           <li key={col.id}>
