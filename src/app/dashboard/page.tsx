@@ -8,7 +8,12 @@ export default async function DashboardPage() {
     where: { email: "demo@devstash.io" },
     select: { id: true },
   });
-  const userId = demoUser?.id ?? "";
+
+  if (!demoUser) {
+    throw new Error("Demo user not found. Run `npm run db:seed` to seed the database.");
+  }
+
+  const userId = demoUser.id;
   const sidebarData = await getSidebarData(userId);
 
   return (
