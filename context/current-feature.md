@@ -1,38 +1,18 @@
-# Current Feature: Auth Credentials - Email/Password Provider
+# Current Feature
+
+None — no feature in progress.
 
 ## Status
 
-In Progress
+—
 
 ## Goals
 
-- Add Credentials provider for email/password sign-in
-- `auth.config.ts`: Credentials placeholder with `authorize: () => null`
-- `auth.ts`: Override Credentials with real bcrypt validation
-- Create `POST /api/auth/register` route (name, email, password, confirmPassword)
-- Registration validates match, checks duplicate email, hashes with bcryptjs, creates user
+—
 
 ## Notes
 
-**Split config pattern for Credentials:**
-- `auth.config.ts` needs the Credentials provider stub (edge-safe, no bcrypt)
-- `auth.ts` overrides it with the real `authorize` function using bcrypt
-
-**Registration route:** `src/app/api/auth/register/route.ts`
-- Validate passwords match
-- Check user doesn't already exist
-- Hash with bcryptjs (already installed)
-- Return `{ success, error }` JSON
-
-**Password field:** Already on User model (`password String?`) — no migration needed.
-
-**Testing:**
-```bash
-curl -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@test.com","password":"password123","confirmPassword":"password123"}'
-```
-Then sign in at `/api/auth/signin` with email/password and verify dashboard redirect. Also verify GitHub OAuth still works.
+—
 
 ## History
 
@@ -50,3 +30,4 @@ Then sign in at `/api/auth/signin` with email/password and verify dashboard redi
 - **2026-05-02** — Pro Badge in Sidebar complete. Installed ShadCN `Badge` component. Added a subtle "PRO" outline badge next to Files and Images types in the sidebar, indicating they are Pro-tier features.
 - **2026-05-03** — Code quality quick wins complete. Extracted `StatCard`, `CollectionCard`, `ItemCard` into separate files. Created `src/lib/type-config.ts` as single source of truth for type icons/colors (eliminating duplication between `DashboardMain` and `Sidebar`). Added explicit null check in dashboard page, `DATABASE_URL` validation in `prisma.ts`, dashboard `error.tsx` boundary, and fixed icon fallback inconsistency in `collections.ts`.
 - **2026-05-09** — Auth Phase 1 complete. Installed `next-auth@beta` and `@auth/prisma-adapter`. Set up split config pattern (`auth.config.ts` for edge, `auth.ts` with PrismaAdapter + JWT strategy). Added GitHub OAuth provider. Registered API route at `/api/auth/[...nextauth]`. Protected `/dashboard/*` via `src/proxy.ts` with redirect to sign-in. Extended `Session` type with `user.id`. Added `name`, `image`, `emailVerified` fields to User model and ran migration.
+- **2026-05-10** — Auth Phase 2 complete. Added Credentials provider for email/password sign-in. Split pattern: `auth.config.ts` holds edge-safe stub (`authorize: () => null`), `auth.ts` overrides with real bcrypt validation. Created `POST /api/auth/register` route with password match validation, duplicate email check, and bcrypt hashing. Both GitHub OAuth and email/password appear on the same NextAuth sign-in page.
