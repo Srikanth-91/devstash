@@ -1,23 +1,21 @@
+import { redirect } from "next/navigation";
 import DashboardShell from "@/components/dashboard/DashboardShell";
 import DashboardMain from "@/components/dashboard/DashboardMain";
 import { getSidebarData } from "@/lib/db/collections";
-import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 export default async function DashboardPage() {
-  const demoUser = await prisma.user.findUnique({
-    where: { email: "demo@devstash.io" },
-    select: { id: true },
-  });
+  const session = await auth();
 
-  if (!demoUser) {
-    throw new Error("Demo user not found. Run `npm run db:seed` to seed the database.");
+  if (!session?.user?.id) {
+    redirect("/sign-in");
   }
 
-  const userId = demoUser.id;
+  const userId = session.user.id;
   const sidebarData = await getSidebarData(userId);
 
   return (
-    <DashboardShell sidebarData={sidebarData}>
+    <DashboardShell sidebarData={sidebarData} user={session.user}>
       <DashboardMain userId={userId} />
     </DashboardShell>
   );
