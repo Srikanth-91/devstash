@@ -6,7 +6,7 @@ const { auth } = NextAuth(authConfig)
 
 export const proxy = auth(function proxy(req) {
   if (!req.auth) {
-    return NextResponse.redirect(new URL("/api/auth/signin", req.url))
+    return NextResponse.redirect(new URL("/sign-in", req.url))
   }
 })
 

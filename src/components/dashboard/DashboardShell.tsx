@@ -5,15 +5,22 @@ import TopBar from "./TopBar";
 import Sidebar from "./Sidebar";
 import type { SidebarItemType, SidebarCollection } from "@/lib/db/collections";
 
+interface SidebarUser {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
+
 interface DashboardShellProps {
   children: React.ReactNode;
   sidebarData: {
     itemTypes: SidebarItemType[];
     collections: SidebarCollection[];
   };
+  user: SidebarUser;
 }
 
-export default function DashboardShell({ children, sidebarData }: DashboardShellProps) {
+export default function DashboardShell({ children, sidebarData, user }: DashboardShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
@@ -28,6 +35,7 @@ export default function DashboardShell({ children, sidebarData }: DashboardShell
           onClose={() => setSidebarOpen(false)}
           itemTypes={sidebarData.itemTypes}
           collections={sidebarData.collections}
+          user={user}
         />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>

@@ -1,19 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { File, Star, Settings, X, ChevronDown, ChevronRight } from "lucide-react";
+import { File, Star, X, ChevronDown, ChevronRight, LogOut, User } from "lucide-react";
 import type { SidebarItemType, SidebarCollection } from "@/lib/db/collections";
 import { Badge } from "@/components/ui/badge";
 import { TYPE_CONFIG, ICON_NAME_TO_CONFIG } from "@/lib/type-config";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { signOut } from "next-auth/react";
+import { UserAvatar } from "@/components/ui/UserAvatar";
 
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+interface SidebarUser {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
 }
 
 interface SidebarProps {
@@ -21,10 +20,23 @@ interface SidebarProps {
   onClose: () => void;
   itemTypes: SidebarItemType[];
   collections: SidebarCollection[];
+  user: SidebarUser;
 }
 
-export default function Sidebar({ isOpen, onClose, itemTypes, collections }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, itemTypes, collections, user }: SidebarProps) {
   const [collectionsOpen, setCollectionsOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
 
   const favoriteCollections = collections.filter((c) => c.isFavorite);
   const allCollections = collections.filter((c) => !c.isFavorite);
@@ -171,17 +183,39 @@ export default function Sidebar({ isOpen, onClose, itemTypes, collections }: Sid
           </section>
         </div>
 
-        {/* User avatar area */}
-        <div className="shrink-0 border-t border-sidebar-border px-3 py-2 flex items-center gap-2.5">
-          <div className="size-7 rounded-full bg-sidebar-primary flex items-center justify-center text-sidebar-primary-foreground text-xs font-semibold shrink-0">
-            {getInitials("Demo User")}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-sidebar-foreground truncate">Demo User</p>
-            <p className="text-[10px] text-muted-foreground truncate">demo@devstash.io</p>
-          </div>
-          <button className="p-1 rounded hover:bg-sidebar-accent text-muted-foreground hover:text-sidebar-foreground transition-colors">
-            <Settings className="size-3.5" />
+        {/* User area */}
+        <div className="shrink-0 border-t border-sidebar-border" ref={menuRef}>
+          {/* Dropdown menu */}
+          {menuOpen && (
+            <div className="mx-2 mb-1 rounded-lg border border-sidebar-border bg-sidebar shadow-lg overflow-hidden">
+              <Link
+                href="/profile"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 text-xs text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+              >
+                <User className="size-3.5 text-muted-foreground" />
+                Profile
+              </Link>
+              <button
+                onClick={() => signOut({ callbackUrl: "/sign-in" })}
+                className="flex items-center gap-2 w-full px-3 py-2 text-xs text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+              >
+                <LogOut className="size-3.5 text-muted-foreground" />
+                Sign out
+              </button>
+            </div>
+          )}
+
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            className="w-full px-3 py-2 flex items-center gap-2.5 hover:bg-sidebar-accent transition-colors"
+          >
+            <UserAvatar name={user.name} image={user.image} size={28} />
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-xs font-medium text-sidebar-foreground truncate">{user.name ?? "User"}</p>
+              <p className="text-[10px] text-muted-foreground truncate">{user.email ?? ""}</p>
+            </div>
+            <ChevronDown className={`size-3.5 text-muted-foreground shrink-0 transition-transform ${menuOpen ? "rotate-180" : ""}`} />
           </button>
         </div>
       </aside>
