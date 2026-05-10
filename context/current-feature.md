@@ -1,18 +1,38 @@
-# Current Feature
-
-None — no feature in progress.
+# Current Feature: Auth Credentials - Email/Password Provider
 
 ## Status
 
-—
+In Progress
 
 ## Goals
 
-—
+- Add Credentials provider for email/password sign-in
+- `auth.config.ts`: Credentials placeholder with `authorize: () => null`
+- `auth.ts`: Override Credentials with real bcrypt validation
+- Create `POST /api/auth/register` route (name, email, password, confirmPassword)
+- Registration validates match, checks duplicate email, hashes with bcryptjs, creates user
 
 ## Notes
 
-—
+**Split config pattern for Credentials:**
+- `auth.config.ts` needs the Credentials provider stub (edge-safe, no bcrypt)
+- `auth.ts` overrides it with the real `authorize` function using bcrypt
+
+**Registration route:** `src/app/api/auth/register/route.ts`
+- Validate passwords match
+- Check user doesn't already exist
+- Hash with bcryptjs (already installed)
+- Return `{ success, error }` JSON
+
+**Password field:** Already on User model (`password String?`) — no migration needed.
+
+**Testing:**
+```bash
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@test.com","password":"password123","confirmPassword":"password123"}'
+```
+Then sign in at `/api/auth/signin` with email/password and verify dashboard redirect. Also verify GitHub OAuth still works.
 
 ## History
 
